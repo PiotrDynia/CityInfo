@@ -34,35 +34,38 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .padding(horizontal = 32.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.logo_transparent),
-            contentDescription = null,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-        TextField(
-            value = "",
-            onValueChange = {},
-            shape = CircleShape,
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null
-                )
-            },
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
-            placeholder = {
-                Text(stringResource(R.string.placeholder_search))
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
-        Button(onClick = {  }) {
-            Text(text = stringResource(R.string.button_search))
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Image(
+                painter = painterResource(R.drawable.logo_transparent),
+                contentDescription = null
+            )
+            TextField(
+                value = "",
+                onValueChange = {},
+                shape = CircleShape,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = null
+                    )
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                placeholder = {
+                    Text(stringResource(R.string.placeholder_search))
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Button(onClick = {  }) {
+                Text(text = stringResource(R.string.button_search))
+            }
         }
     }
 }
