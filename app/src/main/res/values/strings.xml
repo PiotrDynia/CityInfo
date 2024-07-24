@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CityInfo</string>
+    <string name="placeholder_search">Search for a city…</string>
+    <string name="button_search">Search</string>
 </resources>
