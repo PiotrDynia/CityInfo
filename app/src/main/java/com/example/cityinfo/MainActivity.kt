@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CityInfoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
-                    HomeScreen()
+                    WebView()
                 }
             }
         }
