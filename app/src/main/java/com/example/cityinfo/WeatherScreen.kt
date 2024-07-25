@@ -1,18 +1,16 @@
 package com.example.cityinfo
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun WeatherView(state: CityInfoState, modifier: Modifier = Modifier) {
@@ -21,22 +19,40 @@ fun WeatherView(state: CityInfoState, modifier: Modifier = Modifier) {
             .fillMaxSize()
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = "City: ${state.cityInfo?.name}")
-            Text(text = "Country: ${state.cityInfo?.country}")
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "City: ${state.cityInfo?.name ?: "N/A"}",
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Country: ${state.cityInfo?.country ?: "N/A"}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
-        Column (
+        Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
                 painter = painterResource(R.drawable.weather),
                 contentDescription = null,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.primary
             )
-            Text(text = "Weather: ${state.weatherInfo?.weather?.get(0)?.description}")
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Weather: ${state.weatherInfo?.weather?.get(0)?.description ?: "N/A"}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
     }
 }
