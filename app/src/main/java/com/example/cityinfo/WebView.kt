@@ -7,7 +7,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
-fun WebView(modifier: Modifier = Modifier) {
+fun WebView(
+    cityName: String,
+    modifier: Modifier = Modifier) {
     AndroidView(
         factory = { context ->
             android.webkit.WebView(context).apply {
@@ -20,7 +22,7 @@ fun WebView(modifier: Modifier = Modifier) {
             }
         },
         update = { webView ->
-            webView.loadUrl("https://en.m.wikipedia.org/wiki/London")
+            webView.loadUrl("https://en.m.wikipedia.org/wiki/$cityName")
         }
     )
 }
@@ -28,5 +30,5 @@ fun WebView(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun WebViewPreview() {
-    WebView()
+    WebView(cityName = "London")
 }

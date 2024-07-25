@@ -26,7 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    state: CityInfoState,
+    onAction: (CityInfoAction) -> Unit,
+    modifier: Modifier = Modifier) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,8 +47,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 contentDescription = null
             )
             TextField(
-                value = "",
-                onValueChange = {},
+                value = state.searchInput,
+                onValueChange = { newValue -> onAction(CityInfoAction.updateSearchInput(newValue))},
                 shape = CircleShape,
                 leadingIcon = {
                     Icon(
@@ -63,15 +66,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-            Button(onClick = {  }) {
+            Button(onClick = { onAction(CityInfoAction.SearchCityInfo) }) {
                 Text(text = stringResource(R.string.button_search))
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun HomeScreenPreview() {
-    HomeScreen()
 }
