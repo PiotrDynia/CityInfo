@@ -26,7 +26,7 @@ class CityInfoViewModel : ViewModel() {
                 getWeatherInfo(cityName = _state.value.searchInput)
                 _state.update { newState ->
                     newState.copy(
-                        isCityView = true
+                        isWebView = true
                     )
                 }
             }

@@ -1,9 +1,12 @@
 package com.example.cityinfo
 
 import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
@@ -23,7 +26,10 @@ fun WebView(
         },
         update = { webView ->
             webView.loadUrl("https://en.m.wikipedia.org/wiki/$cityName")
-        }
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .height(400.dp)
     )
 }
 
