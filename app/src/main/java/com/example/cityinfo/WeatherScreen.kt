@@ -1,5 +1,6 @@
 package com.example.cityinfo
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,30 +9,34 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WeatherView(modifier: Modifier = Modifier) {
+fun WeatherView(state: CityInfoState, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = "City name: London")
-            Text(text = "Weather: cloudy")
-            Text(text = "Country: England")
+            Text(text = "City: ${state.cityInfo?.name}")
+            Text(text = "Country: ${state.cityInfo?.country}")
         }
-        Column {
+        Column (
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Icon(
-                painter = painterResource(id = R.drawable.weather),
+                painter = painterResource(R.drawable.weather),
                 contentDescription = null,
                 modifier = Modifier.size(48.dp)
             )
-            Text(text = "Weather: cloudy")
+            Text(text = "Weather: ${state.weatherInfo?.weather?.get(0)?.description}")
         }
-        
     }
 }

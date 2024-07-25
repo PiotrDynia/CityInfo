@@ -1,8 +1,8 @@
 package com.example.cityinfo
 
 import android.webkit.WebViewClient
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,8 +28,8 @@ fun WebView(
             webView.loadUrl("https://en.m.wikipedia.org/wiki/$cityName")
         },
         modifier = modifier
-            .fillMaxWidth()
-            .height(400.dp)
+            .fillMaxSize()
+            .padding(top = 32.dp)
     )
 }
 

@@ -14,33 +14,42 @@ class CityInfoViewModel : ViewModel() {
     val state: StateFlow<CityInfoState> = _state.asStateFlow()
 
     fun onAction(action: CityInfoAction) {
-        when(action) {
-            is CityInfoAction.updateSearchInput -> {
+        when (action) {
+            is CityInfoAction.UpdateSearchInput -> {
                 _state.update { newState ->
                     newState.copy(
                         searchInput = action.input
                     )
                 }
             }
+
             CityInfoAction.SearchCityInfo -> {
+                viewModelScope.launch {
+                    getCityInfo(cityName = _state.value.searchInput)
+                    _state.update { newState ->
+                        newState.copy(
+                            currentScreen = CurrentScreen.CITY_INFO_SCREEN
+                        )
+                    }
+                }
+            }
+
+            CityInfoAction.SearchCityWeather -> {
                 getWeatherInfo(cityName = _state.value.searchInput)
                 _state.update { newState ->
                     newState.copy(
-                        isWebView = true
+                        currentScreen = CurrentScreen.CITY_WEATHER_SCREEN
                     )
                 }
             }
-        }
-    }
 
-    private fun getWeatherInfo(cityName: String, stateCode: String? = null, countryCode: String? = null) {
-        viewModelScope.launch {
-            getCityInfo(cityName, stateCode, countryCode)
-            val cityInfo = _state.value.cityInfo
-            println("City info - $cityInfo")
-            getCityWeather(cityInfo!!.lat, cityInfo.lon)
-            val cityWeather = _state.value.weatherInfo
-            println("City weather info - $cityWeather")
+            CityInfoAction.OnBackPressed -> {
+                _state.update { newState ->
+                    newState.copy(
+                        currentScreen = CurrentScreen.HOME_SCREEN
+                    )
+                }
+            }
         }
     }
 
@@ -49,18 +58,30 @@ class CityInfoViewModel : ViewModel() {
         stateCode: String? = null,
         countryCode: String? = null
     ) {
-        val query = listOfNotNull(cityName, stateCode, countryCode).joinToString(",")
-        try {
-            val cityInfoResponse = apiService.getCityInfo(query)
-            if (cityInfoResponse.isNotEmpty()) {
-                _state.update { newState ->
-                    newState.copy(
-                        cityInfo = cityInfoResponse[0]
-                    )
+            val query = listOfNotNull(cityName, stateCode, countryCode).joinToString(",")
+            try {
+                val cityInfoResponse = apiService.getCityInfo(query)
+                if (cityInfoResponse.isNotEmpty()) {
+                    _state.update { newState ->
+                        newState.copy(
+                            cityInfo = cityInfoResponse[0]
+                        )
+                    }
                 }
+            } catch (e: Exception) {
+                println("Error fetching city info = $e, query - $query")
             }
-        } catch (e: Exception) {
-            println("Error fetching city info = $e, query - $query")
+    }
+
+    private fun getWeatherInfo(
+        cityName: String,
+        stateCode: String? = null,
+        countryCode: String? = null
+    ) {
+        viewModelScope.launch {
+            getCityInfo(cityName, stateCode, countryCode)
+            val cityInfo = _state.value.cityInfo
+            getCityWeather(cityInfo!!.lat, cityInfo.lon)
         }
     }
 

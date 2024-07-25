@@ -2,6 +2,7 @@ package com.example.cityinfo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -23,13 +24,22 @@ class MainActivity : ComponentActivity() {
                 val viewModel by viewModels<CityInfoViewModel>()
                 val state by viewModel.state.collectAsState()
                 Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
-                    if (state.isWebView) {
-                        WebView(cityName = state.searchInput)
-                    } else {
-                        HomeScreen(
-                            state = state,
-                            onAction = viewModel::onAction
-                        )
+                    BackHandler {
+                        viewModel.onAction(CityInfoAction.OnBackPressed)
+                    }
+                    when(state.currentScreen) {
+                        CurrentScreen.HOME_SCREEN -> {
+                            HomeScreen(
+                                state = state,
+                                onAction = viewModel::onAction
+                            )
+                        }
+                        CurrentScreen.CITY_INFO_SCREEN -> {
+                            WebView(cityName = state.searchInput)
+                        }
+                        CurrentScreen.CITY_WEATHER_SCREEN -> {
+                            WeatherView(state = state)
+                        }
                     }
                 }
             }
