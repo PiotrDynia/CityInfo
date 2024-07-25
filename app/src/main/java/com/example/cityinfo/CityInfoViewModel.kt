@@ -25,25 +25,29 @@ class CityInfoViewModel : ViewModel() {
 
             CityInfoAction.SearchCityInfo -> {
                 viewModelScope.launch {
-                    getCityInfo(cityName = _state.value.searchInput)
-                    _state.update { newState ->
-                        newState.copy(
-                            currentScreen = CurrentScreen.CITY_INFO_SCREEN
-                        )
+                    if (_state.value.searchInput.isNotEmpty()) {
+                        getCityInfo(cityName = _state.value.searchInput)
+                        _state.update { newState ->
+                            newState.copy(
+                                currentScreen = CurrentScreen.CITY_INFO_SCREEN
+                            )
+                        }
                     }
                 }
             }
 
             CityInfoAction.SearchCityWeather -> {
-                getWeatherInfo(cityName = _state.value.searchInput)
-                _state.update { newState ->
-                    newState.copy(
-                        currentScreen = CurrentScreen.CITY_WEATHER_SCREEN
-                    )
+                if (_state.value.searchInput.isNotEmpty()) {
+                    getWeatherInfo(cityName = _state.value.searchInput)
+                    _state.update { newState ->
+                        newState.copy(
+                            currentScreen = CurrentScreen.CITY_WEATHER_SCREEN
+                        )
+                    }
                 }
             }
 
-            CityInfoAction.OnBackPressed -> {
+            CityInfoAction.BackToHome -> {
                 _state.update { newState ->
                     newState.copy(
                         currentScreen = CurrentScreen.HOME_SCREEN
@@ -67,9 +71,11 @@ class CityInfoViewModel : ViewModel() {
                             cityInfo = cityInfoResponse[0]
                         )
                     }
+                } else {
+                    setErrorMessage()
                 }
             } catch (e: Exception) {
-                println("Error fetching city info = $e, query - $query")
+                setErrorMessage()
             }
     }
 
@@ -81,7 +87,11 @@ class CityInfoViewModel : ViewModel() {
         viewModelScope.launch {
             getCityInfo(cityName, stateCode, countryCode)
             val cityInfo = _state.value.cityInfo
-            getCityWeather(cityInfo!!.lat, cityInfo.lon)
+            if (cityInfo != null) {
+                getCityWeather(cityInfo.lat, cityInfo.lon)
+            } else {
+                setErrorMessage("weather")
+            }
         }
     }
 
@@ -94,7 +104,16 @@ class CityInfoViewModel : ViewModel() {
                 )
             }
         } catch (e: Exception) {
-            println("Error fetching city weather info = $e")
+            setErrorMessage("weather")
+        }
+    }
+
+    private fun setErrorMessage(errorType: String = "") {
+        _state.update { newState ->
+            newState.copy(
+                errorMessage = "Error fetching $errorType info about the city.",
+                currentScreen = CurrentScreen.ERROR_SCREEN
+            )
         }
     }
 }

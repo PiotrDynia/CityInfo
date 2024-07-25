@@ -25,20 +25,29 @@ class MainActivity : ComponentActivity() {
                 val state by viewModel.state.collectAsState()
                 Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
                     BackHandler {
-                        viewModel.onAction(CityInfoAction.OnBackPressed)
+                        viewModel.onAction(CityInfoAction.BackToHome)
                     }
-                    when(state.currentScreen) {
+                    when (state.currentScreen) {
                         CurrentScreen.HOME_SCREEN -> {
                             HomeScreen(
                                 state = state,
                                 onAction = viewModel::onAction
                             )
                         }
+
                         CurrentScreen.CITY_INFO_SCREEN -> {
-                            WebView(cityName = state.searchInput)
+                            InfoScreen(cityName = state.searchInput)
                         }
+
                         CurrentScreen.CITY_WEATHER_SCREEN -> {
                             WeatherView(state = state)
+                        }
+
+                        CurrentScreen.ERROR_SCREEN -> {
+                            ErrorScreen(errorMessage = state.errorMessage,
+                                onRetry = {
+                                    viewModel.onAction(CityInfoAction.BackToHome)
+                                })
                         }
                     }
                 }
