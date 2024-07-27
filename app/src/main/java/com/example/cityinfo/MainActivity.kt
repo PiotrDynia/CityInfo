@@ -13,6 +13,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.cityinfo.screens.CurrentScreen
+import com.example.cityinfo.screens.ErrorScreen
+import com.example.cityinfo.screens.HomeScreen
+import com.example.cityinfo.screens.InfoScreen
+import com.example.cityinfo.screens.WeatherView
+import com.example.cityinfo.state.CityInfoAction
+import com.example.cityinfo.state.CityInfoViewModel
 import com.example.cityinfo.ui.theme.CityInfoTheme
 
 class MainActivity : ComponentActivity() {
