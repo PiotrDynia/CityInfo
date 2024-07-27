@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -22,11 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    state: CityInfoState,
+    onAction: (CityInfoAction) -> Unit,
+    modifier: Modifier = Modifier) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,8 +44,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 contentDescription = null
             )
             TextField(
-                value = "",
-                onValueChange = {},
+                value = state.searchInput,
+                onValueChange = { newValue -> onAction(CityInfoAction.UpdateSearchInput(newValue))},
                 shape = CircleShape,
                 leadingIcon = {
                     Icon(
@@ -63,15 +63,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-            Button(onClick = {  }) {
-                Text(text = stringResource(R.string.button_search))
+            Button(onClick = { onAction(CityInfoAction.SearchCityInfo) }) {
+                Text(text = stringResource(R.string.button_search_info))
+            }
+            Button(onClick = { onAction(CityInfoAction.SearchCityWeather) }) {
+                Text(text = stringResource(R.string.button_search_weather))
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun HomeScreenPreview() {
-    HomeScreen()
 }
